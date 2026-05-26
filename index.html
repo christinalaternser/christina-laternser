@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Christina Laternser, Ph.D.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:   #0d1b35;
+      --navy2:  #162040;
+      --gold:   #c4964a;
+      --gold-lt:#e0b97a;
+      --cream:  #f8f5ef;
+      --warm:   #f2ede4;
+      --text:   #1e1e2e;
+      --muted:  #6b6b80;
+      --border: #ddd8cf;
+      --serif:  'Cormorant Garamond', Georgia, serif;
+      --sans:   'Jost', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--sans);
+      background: var(--cream);
+      color: var(--text);
+      line-height: 1.7;
+      font-weight: 300;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1.1rem 4rem;
+      background: rgba(13,27,53,0.96);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid rgba(196,150,74,0.2);
+    }
+    nav .brand {
+      font-family: var(--serif);
+      color: var(--gold-lt);
+      font-size: 1.05rem;
+      font-weight: 400;
+      letter-spacing: 0.03em;
+      text-decoration: none;
+    }
+    nav ul { display: flex; gap: 2.5rem; list-style: none; }
+    nav ul a {
+      font-family: var(--sans);
+      color: rgba(255,255,255,0.7);
+      text-decoration: none;
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-weight: 400;
+      transition: color 0.2s;
+    }
+    nav ul a:hover { color: var(--gold-lt); }
+
+    /* HERO */
+    #hero {
+      min-height: 100vh;
+      background: var(--navy);
+      display: flex; align-items: center;
+      position: relative;
+      overflow: hidden;
+      padding: 8rem 4rem 5rem;
+    }
+    #hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 70% 60% at 80% 40%, rgba(196,150,74,0.07) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 80% at 10% 80%, rgba(22,32,64,0.8) 0%, transparent 70%);
+    }
+    #hero::after {
+      content: '';
+      position: absolute; inset: 0;
+      background-image: linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+    .hero-content { position: relative; z-index: 1; max-width: 820px; }
+    .hero-eyebrow {
+      font-family: var(--sans);
+      font-size: 0.72rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.4rem;
+      font-weight: 400;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.2s forwards;
+    }
+    .hero-name {
+      font-family: var(--serif);
+      font-size: clamp(3.2rem, 7vw, 5.8rem);
+      font-weight: 300;
+      color: #fff;
+      line-height: 1.05;
+      letter-spacing: -0.01em;
+      margin-bottom: 1.2rem;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.4s forwards;
+    }
+    .hero-name em { font-style: italic; color: var(--gold-lt); }
+    .hero-title {
+      font-family: var(--serif);
+      font-size: 1.25rem;
+      font-weight: 300;
+      color: rgba(255,255,255,0.65);
+      margin-bottom: 0.5rem;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.6s forwards;
+    }
+    .hero-inst {
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.4);
+      letter-spacing: 0.04em;
+      margin-bottom: 3rem;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.7s forwards;
+    }
+    .hero-links {
+      display: flex; gap: 1rem; flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.9s forwards;
+    }
+    .btn {
+      display: inline-block;
+      padding: 0.65rem 1.6rem;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-family: var(--sans);
+      font-weight: 400;
+      text-decoration: none;
+      transition: all 0.25s;
+      border-radius: 1px;
+    }
+    .btn-gold { background: var(--gold); color: #fff; border: 1px solid var(--gold); }
+    .btn-gold:hover { background: var(--gold-lt); border-color: var(--gold-lt); }
+    .btn-outline { border: 1px solid rgba(255,255,255,0.3); color: rgba(255,255,255,0.7); }
+    .btn-outline:hover { border-color: var(--gold-lt); color: var(--gold-lt); }
+    .hero-scroll {
+      position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
+      z-index: 1;
+      display: flex; flex-direction: column; align-items: center; gap: 0.4rem;
+      color: rgba(255,255,255,0.3);
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      animation: fadeUp 1s 1.2s forwards; opacity: 0;
+    }
+    .hero-scroll span { display: block; width: 1px; height: 40px; background: rgba(196,150,74,0.4); }
+
+    /* SECTIONS */
+    section { padding: 6rem 4rem; }
+    section:nth-child(even) { background: var(--warm); }
+    .section-inner { max-width: 960px; margin: 0 auto; }
+    .section-label {
+      font-size: 0.68rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-family: var(--sans);
+      font-weight: 400;
+      margin-bottom: 1rem;
+    }
+    .section-title {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 4vw, 2.8rem);
+      font-weight: 300;
+      color: var(--navy);
+      line-height: 1.2;
+      margin-bottom: 2.5rem;
+    }
+
+    /* ABOUT */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 3fr 1.2fr;
+      gap: 4rem;
+      align-items: start;
+    }
+    .about-text p {
+      font-size: 1.05rem;
+      line-height: 1.85;
+      color: #3a3a4e;
+      margin-bottom: 1.2rem;
+    }
+    .about-text p:last-child { margin-bottom: 0; }
+    .stat-block {
+      border-left: 2px solid var(--gold);
+      padding-left: 1.2rem;
+      margin-bottom: 2rem;
+    }
+    .stat-num {
+      font-family: var(--serif);
+      font-size: 2.4rem;
+      font-weight: 300;
+      color: var(--navy);
+      line-height: 1;
+    }
+    .stat-label {
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 0.2rem;
+    }
+    .stat-link {
+      display: inline-block;
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--gold);
+      text-decoration: none;
+      margin-top: 0.3rem;
+      transition: color 0.2s;
+    }
+    .stat-link:hover { color: var(--navy); }
+
+    /* NEWS */
+    #news { background: var(--navy); }
+    #news .section-title { color: #fff; }
+    .news-card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(196,150,74,0.25);
+      border-left: 3px solid var(--gold);
+      padding: 2rem 2.5rem;
+      border-radius: 2px;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 2rem;
+      align-items: center;
+    }
+    .news-date {
+      font-family: var(--serif);
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold);
+      white-space: nowrap;
+    }
+    .news-body h3 {
+      font-family: var(--serif);
+      font-weight: 400;
+      font-size: 1.25rem;
+      color: #fff;
+      margin-bottom: 0.4rem;
+    }
+    .news-body p { font-size: 0.88rem; color: rgba(255,255,255,0.55); line-height: 1.6; }
+    .news-tag {
+      display: inline-block;
+      font-size: 0.62rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      background: rgba(196,150,74,0.15);
+      color: var(--gold-lt);
+      border: 1px solid rgba(196,150,74,0.3);
+      padding: 0.2rem 0.6rem;
+      border-radius: 1px;
+      margin-bottom: 0.6rem;
+    }
+
+    /* RESEARCH */
+    .research-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2.5rem;
+    }
+    .research-card {
+      border: 1px solid var(--border);
+      padding: 2.2rem;
+      border-radius: 2px;
+      background: #fff;
+      position: relative;
+      overflow: hidden;
+      transition: box-shadow 0.25s, transform 0.25s;
+    }
+    .research-card:hover { box-shadow: 0 8px 40px rgba(0,0,0,0.08); transform: translateY(-2px); }
+    .research-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--gold);
+    }
+    .research-card h3 {
+      font-family: var(--serif);
+      font-size: 1.3rem;
+      font-weight: 500;
+      color: var(--navy);
+      margin-bottom: 0.9rem;
+      line-height: 1.3;
+    }
+    .research-card p { font-size: 0.9rem; color: var(--muted); line-height: 1.75; margin-bottom: 1.2rem; }
+    .topic-list { list-style: none; display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .topic-list li {
+      font-size: 0.68rem;
+      letter-spacing: 0.06em;
+      background: var(--warm);
+      color: var(--navy);
+      padding: 0.25rem 0.65rem;
+      border-radius: 1px;
+      border: 1px solid var(--border);
+    }
+
+    /* PUBLICATIONS */
+    .pub-tabs {
+      display: flex; gap: 0; margin-bottom: 2.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .pub-tab {
+      padding: 0.6rem 1.4rem;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-family: var(--sans);
+      cursor: pointer;
+      color: var(--muted);
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      transition: all 0.2s;
+      background: none;
+      border-top: none; border-left: none; border-right: none;
+    }
+    .pub-tab.active { color: var(--navy); border-bottom-color: var(--gold); }
+    .pub-tab:hover:not(.active) { color: var(--navy); }
+    .pub-panel { display: none; }
+    .pub-panel.active { display: block; }
+    .pub-entry {
+      padding: 1.3rem 0;
+      border-bottom: 1px solid var(--border);
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 1.5rem;
+      align-items: baseline;
+    }
+    .pub-year {
+      font-family: var(--serif);
+      font-size: 0.85rem;
+      color: var(--gold);
+      font-weight: 400;
+      min-width: 2.5rem;
+      padding-top: 0.1rem;
+    }
+    .pub-title {
+      font-family: var(--serif);
+      font-size: 1rem;
+      font-weight: 400;
+      color: var(--navy);
+      line-height: 1.4;
+      margin-bottom: 0.25rem;
+    }
+    .pub-authors { font-size: 0.82rem; color: var(--muted); line-height: 1.5; margin-bottom: 0.2rem; }
+    .pub-authors strong { color: var(--text); font-weight: 500; }
+    .pub-journal { font-size: 0.82rem; color: var(--muted); font-style: italic; }
+    .pub-badge {
+      display: inline-block;
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.15rem 0.5rem;
+      border-radius: 1px;
+      margin-left: 0.5rem;
+      vertical-align: middle;
+      font-style: normal;
+    }
+    .badge-first { background: rgba(196,150,74,0.12); color: var(--gold); border: 1px solid rgba(196,150,74,0.3); }
+    .badge-senior { background: rgba(13,27,53,0.08); color: var(--navy2); border: 1px solid rgba(13,27,53,0.2); }
+    .badge-ssrn { background: rgba(100,100,160,0.08); color: #44447a; border: 1px solid rgba(100,100,160,0.25); }
+    .pub-status { font-size: 0.75rem; color: var(--muted); font-style: italic; margin-top: 0.15rem; }
+
+    /* CONTACT */
+    #contact { background: var(--navy); padding: 5rem 4rem; text-align: center; }
+    #contact .section-title { color: #fff; margin-bottom: 0.8rem; }
+    #contact .section-label { color: var(--gold); text-align: center; }
+    #contact p { color: rgba(255,255,255,0.45); font-size: 0.88rem; margin-bottom: 2rem; }
+    .contact-email {
+      font-family: var(--serif);
+      font-size: 1.3rem;
+      color: var(--gold-lt);
+      text-decoration: none;
+      letter-spacing: 0.02em;
+      display: block;
+      margin-bottom: 2rem;
+      transition: color 0.2s;
+    }
+    .contact-email:hover { color: #fff; }
+    .profile-links {
+      display: flex; justify-content: center; gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 2.5rem;
+    }
+    .profile-link {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.5);
+      text-decoration: none;
+      border: 1px solid rgba(255,255,255,0.15);
+      padding: 0.5rem 1.1rem;
+      border-radius: 1px;
+      transition: all 0.2s;
+    }
+    .profile-link:hover { color: var(--gold-lt); border-color: rgba(196,150,74,0.4); }
+    .footer-line {
+      font-size: 0.7rem;
+      color: rgba(255,255,255,0.2);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding-top: 2rem;
+    }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 780px) {
+      nav { padding: 1rem 1.5rem; }
+      nav ul { gap: 1.2rem; }
+      section { padding: 4rem 1.5rem; }
+      #hero { padding: 7rem 1.5rem 4rem; }
+      .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .research-grid { grid-template-columns: 1fr; }
+      .news-card { grid-template-columns: 1fr; gap: 0.8rem; }
+      #contact { padding: 4rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="brand" href="#hero">Christina Laternser</a>
+  <ul>
+    <li><a href="#about">About</a></li>
+    <li><a href="#research">Research</a></li>
+    <li><a href="#publications">Publications</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-content">
+    <p class="hero-eyebrow">Biostatistician &amp; Health Economist</p>
+    <h1 class="hero-name">Christina<br><em>Laternser,</em> Ph.D.</h1>
+    <p class="hero-title">Ann &amp; Robert H. Lurie Children&apos;s Hospital of Chicago</p>
+    <p class="hero-inst">Department of Pediatrics</p>
+    <div class="hero-links">
+      <a href="#publications" class="btn btn-gold">View Research</a>
+      <a href="Christina_Laternser_CV.pdf" class="btn btn-outline">Download CV</a>
+      <a href="mailto:claternser@luriechildrens.org" class="btn btn-outline">Contact</a>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <span></span>
+    scroll
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-inner">
+    <p class="section-label">About</p>
+    <h2 class="section-title">Research at the intersection of<br>economics, policy, and health systems</h2>
+    <div class="about-grid">
+      <div class="about-text">
+        <p>I am a biostatistician and health economist at the Ann &amp; Robert H. Lurie Children&apos;s Hospital of Chicago, Department of Pediatrics, where I work across two research programs. In collaborative clinical research, I focus on pediatric cardiology and congenital heart disease outcomes, using linked administrative data and competing risks models to examine disparities in diagnosis, intervention timing, and perinatal regionalization.</p>
+        <p>My independent research agenda spans two fields: the industrial organization of pharmaceutical markets — with a focus on patent strategy, regulatory design, and generic entry under the Hatch-Waxman Act — and maternal health access, where I examine the structural determinants of obstetric service availability, maternity care deserts, and geographic barriers to prenatal care.</p>
+        <p>My methodological toolkit includes structural equation modeling, generalized structural equation models, panel econometrics, Fine-Gray competing risks regression, and geospatial analysis. I hold a Ph.D. in Economics from the University of Illinois at Chicago, where my dissertation examined pharmaceutical firm behavior under the Hatch-Waxman regulatory framework.</p>
+      </div>
+      <div class="about-sidebar">
+        <div class="stat-block">
+          <div class="stat-num">21</div>
+          <div class="stat-label">Peer-Reviewed Publications</div>
+        </div>
+        <div class="stat-block">
+          <div class="stat-num">2025</div>
+          <div class="stat-label">AAP Young Investigator Award</div>
+        </div>
+        <div class="stat-block">
+          <div class="stat-num">Ph.D.</div>
+          <div class="stat-label">Economics, UIC 2021</div>
+        </div>
+        <a href="https://scholar.google.com/citations?user=9Dg2PsQAAAAJ&hl=en" class="stat-link" target="_blank">&#8599; Google Scholar Profile</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NEWS -->
+<section id="news">
+  <div class="section-inner">
+    <p class="section-label" style="color:var(--gold)">News &amp; Upcoming</p>
+    <h2 class="section-title">Presentations &amp; Events</h2>
+    <div class="news-card">
+      <div class="news-date">July 20, 2026</div>
+      <div class="news-body">
+        <span class="news-tag">Invited Talk</span>
+        <h3>10th Annual Boston University TPRI IP Day</h3>
+        <p>Invited speaker in a two-paper session on Pharmaceutical IP, presenting <em>&ldquo;Regulatory Design and Strategic Patenting Under the Hatch-Waxman Act.&rdquo;</em> Invited by Tim Simcoe, Mike Meurer, and Arvids Ziedonis. Technology &amp; Policy Research Initiative, Boston University School of Law.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESEARCH -->
+<section id="research">
+  <div class="section-inner">
+    <p class="section-label">Research Programs</p>
+    <h2 class="section-title">Four research programs united by a focus on<br>how institutions and systems shape health</h2>
+    <div class="research-grid">
+      <div class="research-card">
+        <h3>Pharmaceutical Industrial Organization</h3>
+        <p>I study how regulatory architecture shapes strategic behavior in pharmaceutical markets. My work examines patent portfolio design, Orange Book listing strategy, and the timing of generic entry under the Hatch-Waxman Act, connecting regulatory design to market outcomes for generic competition.</p>
+        <ul class="topic-list">
+          <li>Hatch-Waxman Act</li>
+          <li>Generic Entry Timing</li>
+          <li>Patent Strategy</li>
+          <li>Regulatory Design</li>
+          <li>Orange Book</li>
+          <li>Protection Regimes</li>
+        </ul>
+      </div>
+      <div class="research-card">
+        <h3>Maternal Health Access &amp; Obstetric Systems</h3>
+        <p>I examine the structural determinants of obstetric service availability across U.S. counties, developing frameworks that distinguish feasibility from vulnerability in hospital-based obstetric care. Related work addresses maternity care deserts, prenatal care timing, and geographic referral burden.</p>
+        <ul class="topic-list">
+          <li>Maternity Care Deserts</li>
+          <li>Obstetric Service Regimes</li>
+          <li>Prenatal Care Access</li>
+          <li>Geographic Barriers</li>
+          <li>Rural Health</li>
+          <li>Perinatal Regionalization</li>
+        </ul>
+      </div>
+      <div class="research-card">
+        <h3>Congenital Heart Disease Outcomes</h3>
+        <p>In collaborative work with the Lurie Heart Center, I study disparities in the care of children with congenital heart defects — with a focus on prenatal diagnosis, insurance-based differences in intervention timing, length of stay, and perinatal regionalization for critical CHD.</p>
+        <ul class="topic-list">
+          <li>Prenatal Diagnosis</li>
+          <li>CHD Outcomes</li>
+          <li>Insurance Disparities</li>
+          <li>Competing Risks</li>
+          <li>Perinatal Regionalization</li>
+        </ul>
+      </div>
+      <div class="research-card">
+        <h3>Pediatric Cardiology &amp; Transplant</h3>
+        <p>Collaborative clinical research on pediatric heart transplant outcomes, cardiac MRI, Fontan physiology, and pulmonary vein stenosis — developing biostatistical methods and analytic infrastructure for outcomes research in the Lurie Heart Center.</p>
+        <ul class="topic-list">
+          <li>Heart Transplant</li>
+          <li>Cardiac MRI</li>
+          <li>Fontan Physiology</li>
+          <li>Pulmonary Vein Stenosis</li>
+          <li>Pediatric Cardiology</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PUBLICATIONS -->
+<section id="publications">
+  <div class="section-inner">
+    <p class="section-label">Publications &amp; Scholarly Work</p>
+    <h2 class="section-title">Selected Works</h2>
+    <p style="font-size:0.82rem;color:var(--muted);margin-bottom:2rem;margin-top:-1.5rem;">
+      <strong style="color:var(--text)">C. Laternser</strong> in bold denotes Christina Laternser. &nbsp;* First author &nbsp;&dagger; Senior author
+    </p>
+
+    <div class="pub-tabs">
+      <button class="pub-tab active" onclick="showTab(event,'published')">Peer-Reviewed</button>
+      <button class="pub-tab" onclick="showTab(event,'review')">Under Review</button>
+      <button class="pub-tab" onclick="showTab(event,'working')">Working Papers</button>
+    </div>
+
+    <!-- PEER-REVIEWED -->
+    <div id="published" class="pub-panel active">
+
+      <div class="pub-entry">
+        <div class="pub-year">2026</div>
+        <div class="pub-body">
+          <div class="pub-title">Serial CMR findings in pediatric heart transplant recipients</div>
+          <div class="pub-authors">Lawson AA, Lottes RG, Magnetta D, Watanabe K, Rigsby CK, Markl M, <strong>Laternser C</strong>, Husain N, Robinson JD.</div>
+          <div class="pub-journal"><em>Journal of Cardiovascular Magnetic Resonance</em> 28. 2026.</div>
+        </div>
+      </div>
+
+      <div class="pub-entry">
+        <div class="pub-year">2026</div>
+        <div class="pub-body">
+          <div class="pub-title">Fontan conduit cross-sectional area and relationship to exercise performance</div>
+          <div class="pub-authors">O&apos;Halloran CP, Alsaied T, Wang AP, Ward K, <strong>Laternser C</strong>, Files MD, et al.</div>
+          <div class="pub-journal"><em>Journal of Cardiovascular Magnetic Resonance</em> 102729. 2026.</div>
+        </div>
+      </div>
+
+      <div class="pub-entry">
+        <div class="pub-year">2025</div>
+        <div class="pub-body">
+          <div class="pub-title">Prenatal care and perinatal regionalization for congenital heart defects <span class="pub-badge badge-first">First Author</span></div>
+          <div class="pub-authors"><strong>Laternser C*</strong>, Grobman WA, Albaro C, Anderson BR, Batton B, Yee LM, Woo JL.</div>
+          <div class="pub-journal"><em>JAMA Network Open</em> 8(11):e2542135. 2025.</div>
+        </div>
+      </div>
+
+      <div class="pub-entry">
+        <div class="pub-year">2025</div>
+        <div class="pub-body">
+          <div class="pub-title">Individual risk versus population incidence: a case example with congenital heart defects <span class="pub-badge badge-first">First Author</span></div>
+          <div class="pub-authors"><strong>Laternser C*</strong>, Anderson BR, Yee LM, Grobman WA, Batton B, Knepp MD, et al.</div>
+          <div class="pub-journal"><em>Academic Pediatrics</em> 103187. 2025.</div>
+        </div>
+      </div>
+
+      <div class="pub-entry">
+        <div class="pub-year">2025</div>
+        <div class="pub-body">
+          <div class="pub-title">Prenatal diagnosis mediates the relationship between disease complexity and intervention timing for congenital heart defects <span class="pub-badge badge-senior">Senior Author</span></div>
+          <div class="pub-authors">Woo JL, Gotteiner N, Anderson BR, Yee LM, Grobman WA, Davis MM, <strong>Laternser C&dagger;</strong>.</div>
+          <div class="pub-journal"><em>Pregnancy</em> 1(3):e70011. 2025.</div>
+        </div>
+      </div>
+
+      <div class="pub-entry">
+        <div class="pub-year">2025</div>
+        <div class="pub-body">
+          <div class="pub-title">Second-trimester ultrasound receipt mediates the relationship between public insurance and prenatal diagnosis of a congenital heart defect</div>
+          <div class="pub-authors">Woo JL, Gandhi R, <strong>Laternser C</strong>, Iyengar T, Yee LM, Grobman WA, et al.</div>
+          <div class="pub-journal"><em>Prenatal Diagnosis</em> 45(7):886&ndash;895. 2025.</div>
+        </div>
+      </div>
+
+      <div class="pub-entry">
+        <div class="pub-year">2025</div>
+        <div class="pub-body">
+          <div class="pub-title">Multiparametric cardiovascular magnetic resonance is associated with outcomes in pediatric heart transplant recipients</div>
+          <div class="pub-authors">Lawson AA, Watanabe K, Griffin L, <strong>Laternser C</strong>, Markl M, Rigsby CK, Robinson JD, Husain N.</div>
+          <div class="pub-journal"><em>Journal of Cardiovascular Magnetic Resonance</em> 27(1):101138. 2025.</div>
+        </div>
+      </div>
+
+      <div class="pub-entry">
+        <div class="pub-year">2025</div>
+        <div class="pub-body">
+          <div class="pub-title">The estimated Fick method systematically over-estimates cardiac index compared to thermodilution in children</div>
+          <div class="pub-authors">Lawson AA, Tannous P, <strong>Laternser C</strong>, Migally K.</div>
+          <div class="pub-journal"><em>Pediatric Cardiology</em> 46(3):713&ndash;718. 2025.</div>
+        </div>
+      </div>
+
+      <div class="pub-entry">
+        <div class="pub-year">2025</div>
+        <div class="pub-body">
+          <div class="pub-title">Side cell dilation of jailed pulmonary veins after stenting improves vessel preservation in pediatric pulmonary vein stenosis</div>
+          <div class="pub-authors">O&apos;Halloran CP, Hauck A, Fox J, <strong>Laternser C</strong>, Hoyt E, Nugent AW, et al.</div>
+          <div class="pub-journal"><em>Catheterization and Cardiovascular Interventions</em> 106(3):1732&ndash;1739. 2025.</div>
+        </div>
+      </div>
+
+      <div class="pub-entry">
+        <div class="pub-year">2024</div>
+        <div class="pub-body">
+          <div class="pub-title">Disparities in prenatal diagnosis of congenital heart defects: the interplay of insurance and urbanicity <span class="pub-badge badge-senior">Senior Author</span></div>
+          <div class="pub-authors">Woo JL, Gandhi R, Iyengar T, Yee L, Davis M, Grobman W, <strong>Laternser C&dagger;</strong>.</div>
+          <div class="pub-journal"><em>Journal of the American Heart Association</em> 13(16):e035440. 2024.</div>
+        </div>
+      </div>
+
+      <div class="pub-entry">
+        <div class="pub-year">2024</div>
+        <div class="pub-body">
+          <div class="pub-title">Cardiovascular manifestations of Turner syndrome: phenotypic differences between karyotype subtypes</div>
+          <div class="pub-authors">Birjiniuk A, Weisman AG, <strong>Laternser C</strong>, Camarda J, Brickman WJ, et al.</div>
+          <div class="pub-journal"><em>Pediatric Cardiology</em> 45(7):1407&ndash;1414. 2024.</div>
+        </div>
+      </div>
+
+      <div class="pub-entry">
+        <div class="pub-year">2024</div>
+        <div class="pub-body">
+          <div class="pub-title">The COVID-19 pandemic and its effects on mental health: a before, during, and after comparison</div>
+          <div class="pub-authors">Shah A, <strong>Laternser C</strong>, Tatachar P, Duong P.</div>
+          <div class="pub-journal"><em>International Journal of Environmental Research and Public Health</em> 21(10):1306. 2024.</div>
+        </div>
+      </div>
+
+      <div class="pub-entry">
+        <div class="pub-year">2023</div>
+        <div class="pub-body">
+          <div class="pub-title">Association between prenatal diagnosis and age at surgery for noncritical and critical congenital heart defects</div>
+          <div class="pub-authors">Woo JL, <strong>Laternser C</strong>, Anderson BR, Grobman WA, Monge MC, Davis MM.</div>
+          <div class="pub-journal"><em>Circulation: Cardiovascular Quality and Outcomes</em> 16(9):e009638. 2023.</div>
+        </div>
+      </div>
+
+      <div class="pub-entry">
+        <div class="pub-year">2023</div>
+        <div class="pub-body">
+          <div class="pub-title">Late-gadolinium enhancement is common in older pediatric heart transplant recipients and is associated with lower ejection fraction</div>
+          <div class="pub-authors">Lawson AA, Watanabe K, Griffin L, <strong>Laternser C</strong>, Markl M, Rigsby CK, et al.</div>
+          <div class="pub-journal"><em>Journal of Cardiovascular Magnetic Resonance</em> 25(1):61. 2023.</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- UNDER REVIEW -->
+    <div id="review" class="pub-panel">
+
+      <div class="pub-entry">
+        <div class="pub-year">&mdash;</div>
+        <div class="pub-body">
+          <div class="pub-title">The geometry of regulatory protection regimes in pharmaceutical markets <span class="pub-badge badge-ssrn">SSRN 6618615</span></div>
+          <div class="pub-authors"><strong>Laternser C*</strong>.</div>
+          <div class="pub-status">Under review, <em>International Journal of Industrial Organization</em></div>
+        </div>
+      </div>
+
+      <div class="pub-entry">
+        <div class="pub-year">&mdash;</div>
+        <div class="pub-body">
+          <div class="pub-title">Competing structural explanations for the distribution of hospital-based obstetric services</div>
+          <div class="pub-authors"><strong>Laternser C*</strong>.</div>
+          <div class="pub-status">Revise and resubmit, <em>Milbank Quarterly</em></div>
+        </div>
+      </div>
+
+      <div class="pub-entry">
+        <div class="pub-year">&mdash;</div>
+        <div class="pub-body">
+          <div class="pub-title">Transition dynamics of county obstetric service absence: population exposure and status changes in the United States, 2015&ndash;2023</div>
+          <div class="pub-authors"><strong>Laternser C*</strong>.</div>
+          <div class="pub-status">Revise and resubmit, <em>Health Services Research</em></div>
+        </div>
+      </div>
+
+      <div class="pub-entry">
+        <div class="pub-year">&mdash;</div>
+        <div class="pub-body">
+          <div class="pub-title">Three-regime structure of obstetric service environments</div>
+          <div class="pub-authors"><strong>Laternser C*</strong>.</div>
+          <div class="pub-status">Under review, <em>Maternal and Child Health Journal</em></div>
+        </div>
+      </div>
+
+      <div class="pub-entry">
+        <div class="pub-year">&mdash;</div>
+        <div class="pub-body">
+          <div class="pub-title">Maternity care deserts and the timing of prenatal care initiation</div>
+          <div class="pub-authors"><strong>Laternser C*</strong>.</div>
+          <div class="pub-status">Under review, <em>American Journal of Public Health</em></div>
+        </div>
+      </div>
+
+      <div class="pub-entry">
+        <div class="pub-year">&mdash;</div>
+        <div class="pub-body">
+          <div class="pub-title">Structural feasibility of inpatient obstetric service availability in Illinois: a cross-sectional county-level study</div>
+          <div class="pub-authors"><strong>Laternser C*</strong>.</div>
+          <div class="pub-status">Under review, <em>Journal of Public Health Management and Practice</em></div>
+        </div>
+      </div>
+
+      <div class="pub-entry">
+        <div class="pub-year">&mdash;</div>
+        <div class="pub-body">
+          <div class="pub-title">County prevalence versus population exposure in measuring areas without maternity services: evidence from Illinois, 2015&ndash;2023</div>
+          <div class="pub-authors"><strong>Laternser C*</strong>.</div>
+          <div class="pub-status">Under review, <em>Women&apos;s Health Issues</em></div>
+        </div>
+      </div>
+
+      <div class="pub-entry">
+        <div class="pub-year">&mdash;</div>
+        <div class="pub-body">
+          <div class="pub-title">Time-to-transfer and hospitalization duration for severe congenital heart defects: implications for perinatal regionalization <span class="pub-badge badge-senior">Senior Author</span></div>
+          <div class="pub-authors">Woo JL, Grobman WA, Mong&eacute; MC, Anderson BR, Batton B, Yee LM, <strong>Laternser C&dagger;</strong>.</div>
+          <div class="pub-status">Under review</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- WORKING PAPERS -->
+    <div id="working" class="pub-panel">
+
+      <div class="pub-entry">
+        <div class="pub-year">2026</div>
+        <div class="pub-body">
+          <div class="pub-title">Regulatory architecture and the timing of generic competition <span class="pub-badge badge-ssrn">SSRN 6764179</span></div>
+          <div class="pub-authors"><strong>Laternser C*</strong>.</div>
+          <div class="pub-status">Working paper</div>
+        </div>
+      </div>
+
+      <div class="pub-entry">
+        <div class="pub-year">&mdash;</div>
+        <div class="pub-body">
+          <div class="pub-title">Regulatory design and strategic patenting under the Hatch-Waxman Act <span class="pub-badge badge-ssrn">SSRN 6036037</span></div>
+          <div class="pub-authors"><strong>Laternser C*</strong>.</div>
+          <div class="pub-status">Working paper &middot; Presented at BU TPRI IP Day, July 2026</div>
+        </div>
+      </div>
+
+      <div class="pub-entry">
+        <div class="pub-year">&mdash;</div>
+        <div class="pub-body">
+          <div class="pub-title">Structural feasibility and the architecture of pharmaceutical protection regimes <span class="pub-badge badge-ssrn">SSRN 6809286</span></div>
+          <div class="pub-authors"><strong>Laternser C*</strong>.</div>
+          <div class="pub-status">Working paper</div>
+        </div>
+      </div>
+
+      <div class="pub-entry">
+        <div class="pub-year">&mdash;</div>
+        <div class="pub-body">
+          <div class="pub-title">Measurement&ndash;behavior alignment in obstetric access</div>
+          <div class="pub-authors"><strong>Laternser C*</strong>.</div>
+          <div class="pub-status">Manuscript in preparation</div>
+        </div>
+      </div>
+
+      <div class="pub-entry">
+        <div class="pub-year">&mdash;</div>
+        <div class="pub-body">
+          <div class="pub-title">Accessibility is not redundancy</div>
+          <div class="pub-authors"><strong>Laternser C*</strong>.</div>
+          <div class="pub-status">Manuscript in preparation</div>
+        </div>
+      </div>
+
+      <div class="pub-entry">
+        <div class="pub-year">&mdash;</div>
+        <div class="pub-body">
+          <div class="pub-title">Structural constraints across the perinatal pathway</div>
+          <div class="pub-authors"><strong>Laternser C*</strong>.</div>
+          <div class="pub-status">Manuscript in preparation</div>
+        </div>
+      </div>
+
+      <div class="pub-entry">
+        <div class="pub-year">&mdash;</div>
+        <div class="pub-body">
+          <div class="pub-title">Measuring structural access to obstetric services</div>
+          <div class="pub-authors"><strong>Laternser C*</strong>.</div>
+          <div class="pub-status">Manuscript in preparation</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-inner">
+    <p class="section-label">Contact</p>
+    <h2 class="section-title">Get in Touch</h2>
+    <p>Ann &amp; Robert H. Lurie Children&apos;s Hospital of Chicago<br>225 E. Chicago Avenue, Chicago, IL 60611</p>
+    <a href="mailto:claternser@luriechildrens.org" class="contact-email">claternser@luriechildrens.org</a>
+    <div class="profile-links">
+      <!-- Update these URLs with your actual profile links -->
+      <a href="https://scholar.google.com/citations?user=9Dg2PsQAAAAJ&hl=en" class="profile-link" target="_blank">&#8599; Google Scholar</a>
+      <a href="https://orcid.org/0000-0003-0336-3547" class="profile-link" target="_blank">&#8599; ORCID</a>
+      <a href="https://www.linkedin.com/in/christina-laternser-ph-d-57633219/" class="profile-link" target="_blank">&#8599; LinkedIn</a>
+    </div>
+    <div class="footer-line">
+      Christina Laternser, Ph.D. &nbsp;&middot;&nbsp; Lurie Children&apos;s Hospital of Chicago &nbsp;&middot;&nbsp; Chicago, IL
+    </div>
+  </div>
+</section>
+
+<script>
+  function showTab(e, id) {
+    document.querySelectorAll('.pub-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.pub-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    e.target.classList.add('active');
+  }
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.pub-entry, .research-card, .news-card, .stat-block').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(14px)';
+    el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+    observer.observe(el);
+  });
+</script>
+</body>
+</html>
